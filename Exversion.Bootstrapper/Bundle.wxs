@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+
+  
+  <Bundle Name="Exversion For Excel"
+          Version="1.0.0"
+          Manufacturer="Exversion.com"
+          UpgradeCode="d9451bbc-e4f4-4522-b4b3-5ae96689047b"
+          
+          IconSourceFile="gfx\setup.ico"
+          DisableRemove="no"
+          DisableRepair="yes"
+          DisableModify="yes"
+    >
+
+    <!--LicenseFile="res\eula.rtf"-->
+    <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
+      <bal:WixStandardBootstrapperApplication
+        LicenseUrl=""
+        ThemeFile="res\RtfTheme.xml"
+        LogoFile="gfx\title.png"
+            />
+    </BootstrapperApplicationRef>
+    
+    <!-- Check if VSTO is installed-->
+    <util:RegistrySearch Id="VSTORuntimeTest" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO Runtime Setup\v4R\" Value="VSTORFeature_CLR40" Variable="VSTORFeature"/>
+    <util:RegistrySearch Id="VSTORuntimeVersionV4R" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO Runtime Setup\v4R\" Value="Version" Variable="VSTORVersionV4R"/>
+    <util:RegistrySearch Id="VSTORuntimeVersionV4" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO Runtime Setup\v4\" Value="Version" Variable="VSTORVersionV4"/>
+
+
+    <Chain>
+      <PackageGroupRef Id="NetFx40Web"    />
+      <PackageGroupRef Id="VSTO40"/>
+      <MsiPackage Id="AddInInstaller"  Description="AddIn Installer"
+                  SourceFile="$(var.Exversion.Setup.TargetPath)"
+                  />
+    </Chain>
+  </Bundle>
+
+  <Fragment>
+
+    <PackageGroup Id="VSTO40">
+
+      <!-- Defines installation command for:
+				  Windows XP Service Pack 2 and later
+				  on x86 platform -->
+      <ExePackage
+          Cache="no"
+          Compressed="no"
+          PerMachine="yes"
+          Permanent="yes"
+          Vital="yes"
+          SuppressSignatureVerification="yes"
+          Name="Microsoft Visual Studio 2010 Tools for Office Runtime (x86 and x64)"
+          DownloadUrl="http://download.microsoft.com/download/1/D/1/1D16DA35-34C2-47FB-9BA5-35EED9603C42/vstor_redist.exe"
+          DetectCondition="VSTORFeature"
+          InstallCondition="NOT VSTORFeature OR NOT (VSTORVersionV4R >=v10.0.40303) OR NOT (VSTORVersionV4 >=v10.0.21022)"
+          InstallCommand="/quiet /norestart">
+
+        <!--
+            CertificatePublicKey="F321408E7C51F8544B98E517D76A8334052E26E8"
+            CertificateThumbprint="D57FAC60F1A8D34877AEB350E83F46F6EFC9E5F1"
+          -->
+        <RemotePayload ProductName="Microsoft Visual Studio 2010 Tools for Office Runtime (x86 and x64)"
+                       Description="Microsoft Visual Studio 2010 Tools for Office Runtime (x86 and x64) Setup"
+                       Hash="D40DB6440BD2B5B5AA00DA63F408469FF22A9542"
+                       Size="40058464"
+                       Version="10.0.40820.00" />
+        <!--<ExitCode Behavior="forceReboot"/>-->
+      </ExePackage>
+    </PackageGroup>
+
+  </Fragment>
+
+</Wix>

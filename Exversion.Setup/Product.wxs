@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?define ProductName = "Exversion For Excel" ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <Product Id="*"
+           Name="$(var.ProductName)"
+           Language="1033"
+           Version="1.0.0.0"
+           Manufacturer="Exversion.com"
+           UpgradeCode="EAC022C1-75A7-A754-8AB6-0E40ABC481B4">
+    <Package InstallerVersion="200"
+             Compressed="yes"
+             InstallScope="perUser"
+             InstallPrivileges="limited"
+             />
+
+    <!--<UIRef Id="WixUI_Minimal" />-->
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." 
+                  AllowSameVersionUpgrades="yes"/>
+    <Media Id="1"  Cabinet="cab1.cab" EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="$(var.ProductName)" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="AppDataFolder">
+        <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="ProductComponent"   Guid="{CFF2283B-60E8-DDDD-A99D-9D04906898B3}">
+        <RemoveFolder Id="rmINSTALLFOLDER" Directory="INSTALLFOLDER" On="uninstall"/>
+
+        <File Id="Exversion.dll"  Name="$(var.Exversion.TargetFileName)" Source="$(var.Exversion.TargetPath)" DiskId="1"/>
+        <File Id="Exversion.ExcelAddIn.dll"  Name="$(var.Exversion.ExcelAddIn.TargetFileName)" Source="$(var.Exversion.ExcelAddIn.TargetPath)"/>
+        <File Id="FILE_VstoManifest"  Source="$(var.Exversion.ExcelAddIn.TargetDir)$(var.Exversion.ExcelAddIn.TargetName).vsto"/>
+        <File Id="Exversion.ExcelAddIn.dll.manifest"  Source="$(var.Exversion.ExcelAddIn.TargetPath).manifest"/>
+        <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.dll"  Source="$(var.Exversion.ExcelAddIn.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.dll"/>
+        <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.xml"  Source="$(var.Exversion.ExcelAddIn.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.xml"/>
+        <File Id="Newtonsoft.Json.dll"  Source="$(var.Exversion.TargetDir)Newtonsoft.Json.dll"/>
+        <File Id="Newtonsoft.Json.xml"  Source="$(var.Exversion.TargetDir)Newtonsoft.Json.xml"/>
+        <File Id="settings.config"  Source="$(var.Exversion.ExcelAddIn.TargetDir)settings.config"/>
+
+        <!--comment/uncomment these files to dsiable/enable auoto updates -->
+        <!--
+        <File Id="updater.exe"  Name="$(var.updater.TargetFileName)" Source="$(var.updater.TargetPath)" />
+        <File Id="Ionic.Zip.dll"  Source="files\Ionic.Zip.dll"/>
+        <File Id="version.inf"  Source="files\version.inf"/>
+        -->
+		
+        <RegistryKey Root="HKCU"  Action="createAndRemoveOnUninstall"
+                     Key="Software\Microsoft\Office\Excel\Addins\$(var.ProductName)">
+          <RegistryValue Name="Description" Value="Exversion's plugin for syncing data between Excel and Exversion" Type="string" Action="write" />
+          <RegistryValue Name="FriendlyName" Value="$(var.ProductName)" Type="string" Action="write" />
+          <RegistryValue Name="LoadBehavior" Value="3" Type="integer" Action="write" />
+          <RegistryValue Name="Manifest" Value="[#FILE_VstoManifest]|vstolocal" Type="string" Action="write" KeyPath="yes"/>
+        </RegistryKey>
+
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
