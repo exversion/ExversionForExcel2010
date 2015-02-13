@@ -29,7 +29,7 @@ namespace Exversion.ExcelAddIn.Dialogs
 
             for (int i = 0; i < maxRows; i++)
             {
-                int index = dtGridPreview.Rows.Add(ExcelUtils.PreviewDataset.Rows[i].Cells.ToArray());
+                int index = dtGridPreview.Rows.Add(ExcelUtils.PreviewDataset.Rows[i].Cells.Values.ToList().ToArray());
                 dtGridPreview.Rows[index].HeaderCell.Value = (index + 1).ToString();
             }
         }

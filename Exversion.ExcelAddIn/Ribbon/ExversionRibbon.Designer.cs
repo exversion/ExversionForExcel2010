@@ -140,7 +140,7 @@
             // 
             this.btnUpdateRemote.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnUpdateRemote.Image = global::Exversion.ExcelAddIn.Properties.Resources.remote_sync;
-            this.btnUpdateRemote.Label = "Sync Back";
+            this.btnUpdateRemote.Label = "Send Changes";
             this.btnUpdateRemote.Name = "btnUpdateRemote";
             this.btnUpdateRemote.ShowImage = true;
             this.btnUpdateRemote.SuperTip = "Update remote dataset with contents of local dataset.";
@@ -159,7 +159,7 @@
             // 
             this.btnUpdateLocal.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnUpdateLocal.Image = global::Exversion.ExcelAddIn.Properties.Resources.local_sync;
-            this.btnUpdateLocal.Label = "Sync";
+            this.btnUpdateLocal.Label = "Fetch Updates";
             this.btnUpdateLocal.Name = "btnUpdateLocal";
             this.btnUpdateLocal.ShowImage = true;
             this.btnUpdateLocal.SuperTip = "Update local dataset with contents of remote dataset.";

@@ -36,6 +36,7 @@ namespace Exversion.ExcelAddIn
             else
                 return ExcelRangeState.READY;
         }
+
         public static string RangeToJSon(Excel.Range range)
         {
             StringBuilder result = new StringBuilder();
@@ -62,10 +63,10 @@ namespace Exversion.ExcelAddIn
             string colName;
             Row row = null;
 
-            for (int i = 0; i < colCount; i++)
+            for (int k = 0; k < colCount; k++)
             {
-                colName = firstRow.Columns[i + 1].Cells[1].Text;
-                colNames[i] = colName;
+                colName = firstRow.Columns[k + 1].Cells[1].Text;
+                colNames[k] = colName;
                 PreviewDataset.SelectedColumns.Add(colName);
             }
             //foreach (Excel.Range row in range.Rows)
@@ -78,15 +79,18 @@ namespace Exversion.ExcelAddIn
                 line.Append("{");
                 firstVal = true;
 
-                if (i <= Constants.MAX_PREVIEW_ROWS+2)
+                if (i <= Constants.MAX_PREVIEW_ROWS + 2)
                     row = new Row();
+                //else
+                //    row = null;
 
                 for (int j = 1; j <= colCount; j++)
                 {
                     var cell = range.Rows[i].Cells[j];
                     string text = cell.Text;//.ToString();
-                    if (row != null)
-                        row.Cells.Add(PreviewDataset.SelectedColumns[j-1], text);
+                    //if (row != null)
+                    if (i <= Constants.MAX_PREVIEW_ROWS + 2)
+                        row.Cells.Add(PreviewDataset.SelectedColumns[j - 1], text);
                     if (cell.Value != null)
                         val = cell.Value.ToString();
                     if (text != val)
