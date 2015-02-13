@@ -11,7 +11,9 @@ namespace Exversion.Entities
         [XmlAttribute]
         public string ID { get; set; }
         [XmlAttribute]
-        public string Hash { get; set; }
+        public string LocalHash { get; set; }
+        [XmlAttribute]
+        public string RemoteHash { get; set; }
 
         [XmlIgnoreAttribute]
         public int IndexInRange { get; set; }
@@ -20,14 +22,10 @@ namespace Exversion.Entities
         [XmlIgnoreAttribute]
         public string Text { get; set; }
         [XmlIgnoreAttribute]
-        //public List<string> Cells { get; set; }
         public Dictionary<string, dynamic> Cells { get; set; }
-
-        
 
         public Row()
         {
-            //Cells = new List<string>();
             Cells = new Dictionary<string, object>();
         }
 

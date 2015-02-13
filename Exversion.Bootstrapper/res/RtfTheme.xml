@@ -7,8 +7,9 @@
     <Font Id="3" Height="-12" Weight="500" Foreground="000000" Background="FFFFFF">Lucida Sans</Font>
     <Font Id="4" Height="-12" Weight="500" Foreground="ff0000" Background="FFFFFF" Underline="yes">Lucida Sans</Font>
 
-    <Image X="110" Y="50" Width="370" Height="84" ImageFile="logo.png" Visible="yes"/>
-	<!--    <Image X="11" Y="11" Width="580" Height="120" ImageFile="logo.png" Visible="yes"/>-->
+    <Image X="0" Y="0" Width="500" Height="130" ImageFile="logo.png" Visible="yes"/>
+	<!--<Image X="110" Y="50" Width="370" Height="84" ImageFile="logo.png" Visible="yes"/>-->
+	
     <!--<Text X="80" Y="11" Width="-11" Height="64" FontId="1" Visible="yes" DisablePrefix="yes">#(loc.Title)</Text>-->
 
     <Page Name="Install">

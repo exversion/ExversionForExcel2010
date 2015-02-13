@@ -144,7 +144,7 @@ namespace Exversion.ExcelAddIn
                                                                               ).ToList();
                                 update.EditedRows = newDataset.Rows.Except(curDataset.Rows,
                                                                           new RowComparers.RowComparer()
-                                                                          ).ToList();
+                                                                          ).ToList().Except(update.AddedRows).ToList();
                                 update.RemovedRows = curDataset.Rows.Except(newDataset.Rows,
                                                                            new RowComparers.IDComparer()
                                                                            ).ToList();
@@ -192,12 +192,14 @@ namespace Exversion.ExcelAddIn
                     oldRow = oldDataset.Rows.Find(r => r.ID == row.ID);
                     if (oldRow != null)
                     {
-                        node = part.SelectSingleNode("//Rows/Row[@ID=\"" + oldRow.ID + "\"]");
-                        oldRow.Hash = node.SelectSingleNode("./@Hash").Text = row.Hash;
-
                         index = oldDataset.Rows.IndexOf(oldRow) + 1;
                         range.Rows[index].Cells[2].Value = row.ToString();
                         range.Rows[index].Cells[2].TextToColumns(Tab: true);
+                        row.LocalHash = BuildRowFromRange(range.Rows[index].Cells[2], oldDataset.SelectedColumns.Count, oldDataset.SelectedColumns).LocalHash;
+
+                        node = part.SelectSingleNode("//Rows/Row[@ID=\"" + oldRow.ID + "\"]");
+                        oldRow.LocalHash = node.SelectSingleNode("./@LocalHash").Text = row.LocalHash;
+                        oldRow.RemoteHash = node.SelectSingleNode("./@RemoteHash").Text = row.RemoteHash;
                     }
                 }
 
@@ -210,10 +212,14 @@ namespace Exversion.ExcelAddIn
                         range.Rows[rowsCount + 1].Cells[1].Value = update.AddedRows[i].ID;
                         range.Rows[rowsCount + 1].Cells[2].Value = update.AddedRows[i].ToString();
                         range.Rows[rowsCount + 1].Cells[2].TextToColumns(Tab: true);
+                        update.AddedRows[i].LocalHash = BuildRowFromRange(range.Rows[rowsCount + 1].Cells[2], oldDataset.SelectedColumns.Count, oldDataset.SelectedColumns).LocalHash;
 
                         node = part.SelectSingleNode("//Rows");
-                        node.AppendChildSubtree(string.Format("<Row Hash=\"{0}\" ID=\"{1}\"/>",
-                            update.AddedRows[i].Hash, update.AddedRows[i].ID));
+                        node.AppendChildSubtree(string.Format("<Row ID=\"{0}\" LocalHash=\"{1}\" RemoteHash=\"{2}\"/>",
+                            update.AddedRows[i].ID, update.AddedRows[i].LocalHash, update.AddedRows[i].RemoteHash));
+
+                        oldDataset.Rows.Add(update.AddedRows[i]);
+
                         rowsCount++;
                     }
 
@@ -277,7 +283,7 @@ namespace Exversion.ExcelAddIn
                     if (!string.IsNullOrEmpty(row.ID))
                     {
                         update.ExistingRows.Add(row);
-                        if (curDataset.Rows.Exists(r => r.ID == row.ID && r.Hash != row.Hash))
+                        if (curDataset.Rows.Exists(r => r.ID == row.ID && r.LocalHash != row.LocalHash))
                         {
                             update.EditedRows.Add(row);
                         }
@@ -349,8 +355,10 @@ namespace Exversion.ExcelAddIn
                 {
                     foreach (Row row in dataset.Rows)
                     {
+                        row.RemoteHash = row.LocalHash;
                         node = part.SelectSingleNode("//Rows/Row[@ID=\"" + row.ID + "\"]");
-                        node.SelectSingleNode("./@Hash").Text = row.Hash;
+                        node.SelectSingleNode("./@LocalHash").Text = row.LocalHash;
+                        node.SelectSingleNode("./@RemoteHash").Text = row.RemoteHash;
                     }
                 }
             }
@@ -410,8 +418,8 @@ namespace Exversion.ExcelAddIn
                 if (row != null)
                 {
                     node.AppendChildSubtree(
-                    string.Format("<Row Hash=\"{0}\" ID=\"{1}\"/>",
-                    row.Hash, item.ID));
+                    string.Format("<Row RemoteHash=\"{0}\" LocalHash=\"{1}\" ID=\"{2}\"/>",
+                    row.RemoteHash,row.LocalHash, item.ID));
 
                     range.Rows[row.IndexInRange].Cells[1].Value = item.ID;
                 }
@@ -468,13 +476,13 @@ namespace Exversion.ExcelAddIn
                 Row row = new Row();
                 row.ID = range.Cells[1].Text;
                 Excel.Range cell = range.Cells[1];
-                for (int i = 2; i <= cellsCount + 1; i++)//range.Cells.Count
+                for (int i = 2; i <= cellsCount + 1; i++)
                 {
                     cell = cell.Offset[0, 1];
                     row.Cells.Add(colNames[i-2], cell.Text.Trim());
                 }
-                //row.Text = Converter.DictionaryToString(row.Cells);
-                row.Hash = Utils.Security.HashSHA1(row.GetText());
+             
+                row.LocalHash = Utils.Security.HashSHA1(row.GetText());
 
                 return row;
             }

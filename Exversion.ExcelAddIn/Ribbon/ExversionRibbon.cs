@@ -112,7 +112,7 @@ namespace Exversion.ExcelAddIn
                     (update.EditedRows.Count > 0 ||update.AddedRows.Count>0 || update.RemovedRows.Count>0)))
                 {
                     DatasetsManager.UpdateLocal(dataset, update);
-                    MessageBox.Show("The local dataset has been updated:\n",
+                    MessageBox.Show("The local dataset has been updated.",
                         Constants.APP_NAME, MessageBoxButtons.OK, MessageBoxIcon.Information);
                         //update.EditedRows.Count + " row(s) edited.\n" +
                         //update.AddedRows.Count + " row(s) added.\n" +

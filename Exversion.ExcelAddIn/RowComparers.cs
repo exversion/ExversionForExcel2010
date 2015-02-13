@@ -31,12 +31,12 @@ namespace Exversion.ExcelAddIn
 
             public bool Equals(Row x, Row y)
             {
-                return x.Hash == y.Hash;
+                return x.RemoteHash == y.RemoteHash;
             }
 
             public int GetHashCode(Row row)
             {
-                return row.Hash.GetHashCode();
+                return row.RemoteHash.GetHashCode();
             }
 
             #endregion
@@ -49,12 +49,12 @@ namespace Exversion.ExcelAddIn
             public bool Equals(Row x, Row y)
             {
                 //(x.ID == y.ID) && (x.Hash == y.Hash);
-                return !((x.ID == y.ID) && (x.Hash != y.Hash));
+                return !((x.ID == y.ID) && (x.RemoteHash != y.RemoteHash));
             }
 
             public int GetHashCode(Row row)
             {
-                return (row.ID + row.Hash).GetHashCode();
+                return (row.ID + row.RemoteHash).GetHashCode();
             }
 
             #endregion

@@ -219,7 +219,7 @@ namespace Exversion.ExcelAddIn
             return rng;
 
         }
-        public static void ImportRange(ExcelDataset dataset,bool startFromCurrentCell=false,bool isTracked=true,bool isUpdate=false)//,int columnCount, bool startFromCurrentCell, bool inNewSheet)
+        public static void ImportRange(ExcelDataset dataset,bool startFromCurrentCell=false,bool isTracked=true,bool isUpdate=false)
         {
             workbook = ExcelApp.ActiveWorkbook;
             worksheet = ExcelApp.ActiveSheet as Excel.Worksheet;
@@ -280,15 +280,28 @@ namespace Exversion.ExcelAddIn
             }
             catch { minWidth = 8.5; }
 
+            int c;
             for (int i = 0; i < rowCount; i++)
             {
                 curRow = dataset.Rows[i];
-                if (isTracked)
-                    worksheet.Cells[i + Global.StartingRowIndex, Global.StartingColumnIndex].Value = curRow.ID;
+                //if (isTracked)
+                //    worksheet.Cells[i + Global.StartingRowIndex, Global.StartingColumnIndex].Value = curRow.ID;
                 cell = worksheet.Cells[i + Global.StartingRowIndex, Global.StartingColumnIndex + offset];
                 cell.Value = curRow.Text;
                 cell.TextToColumns(Tab: true);
+                if (isTracked)
+                {
+                    worksheet.Cells[i + Global.StartingRowIndex, Global.StartingColumnIndex].Value = curRow.ID;
+                    //curRow.Text = row.ToString();
+                    //Recalculate row hash after putting data in excel which maybe get altered (autoformatted)
+                    for (c = 0; c < dataset.SelectedColumns.Count; c++)
+                        curRow.Cells[dataset.SelectedColumns[c]] = 
+                            worksheet.Cells[i + Global.StartingRowIndex, Global.StartingColumnIndex + offset + c].Text.Trim();
+                    
+                    curRow.LocalHash = Security.HashSHA1(curRow.GetText());
+                }
             }
+
             Excel.Range wholeRange = worksheet.Range[worksheet.Cells[Global.StartingRowIndex - 1, Global.StartingColumnIndex],
                                               worksheet.Cells[rowCount + Global.StartingRowIndex,
                                                               colCount + Global.StartingColumnIndex]];

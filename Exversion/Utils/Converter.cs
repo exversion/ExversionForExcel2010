@@ -9,7 +9,6 @@ namespace Exversion.Utils
 {
     public static class Converter
     {
-        //public static ExcelDataset RawToExcelDataset(List<Dictionary<string, string>> raw)
         public static ExcelDataset RawToExcelDataset(List<Dictionary<string, dynamic>> raw, List<string> columns)
         {
             if (raw != null)
@@ -40,7 +39,7 @@ namespace Exversion.Utils
                             row.Cells.Add(col, string.Empty);
                     }
                     row.Text = row.ToString();
-                    row.Hash = Security.HashSHA1(row.GetText());
+                    row.RemoteHash = Security.HashSHA1(row.GetText());
                     dataset.Rows.Add(row);
                 }
                 return dataset;
