@@ -16,12 +16,11 @@ namespace Exversion.ExcelAddIn
 
         public static int StartingRowIndex { get; set; }
         public static int StartingColumnIndex { get; set; }
+        
+        public static string ProgressInfo { get; set; }
+        public static bool ProgressIsFinished { get; set; }
 
-        //static Global()
-        //{
-        //    StartingRowIndex = 3;
-        //    StartingColumnIndex = 2;
-        //}
+        public static string PreviewJSON { get; set; }
 
         public static void OnSessionLogged(bool logged)
         {
@@ -37,7 +36,7 @@ namespace Exversion.ExcelAddIn
                 ribbon.btnLogin.Image = global::Exversion.ExcelAddIn.Properties.Resources.login1;
             }
 
-            ribbon.grpRemoteDatasets.Visible=ribbon.grpLocalDatasets.Visible = logged;
+            ribbon.grpRemoteDatasets.Visible = logged;
         }
     }
 }

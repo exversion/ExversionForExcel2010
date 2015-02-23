@@ -48,44 +48,8 @@ namespace Exversion.ExcelAddIn
             }
 
             ExcelUtils.ExcelApp = this.Application;
-
-            //this.Application.SheetActivate += Application_SheetActivate;
-            //this.Application.WorkbookOpen +=
-            //    new Excel.AppEvents_WorkbookOpenEventHandler(Application_WorkbookOpen);
-
-            //if (Convert.ToInt32(Application.Version.Split('.')[0]) > 12)//Excel 2010 and up
-            //{
-            //    foreach (Excel.Workbook wb in Application.Workbooks)
-            //    {
-            //        if (File.Exists(wb.FullName))
-            //            Application_WorkbookOpen(wb);
-            //    }
-            //}
-            //this.Application.WorkbookBeforeSave +=
-            //    new Excel.AppEvents_WorkbookBeforeSaveEventHandler(Application_WorkbookBeforeSave);
         }
 
-        void Application_SheetActivate(object Sh)
-        {
-            
-        }
-        void Application_WorkbookOpen(Excel.Workbook wb)
-        {
-            //if (DatasetsManager.TryAddDatasets(wb))
-            //{
-            //    //Debug.Print("wb contains datasets");
-            //    List<DatasetHeader> updates = DatasetsManager.GetRemoteUpdates(wb.FullName);
-            //    if (updates.Count > 0)
-            //    {
-            //        //Debug.Print("there are remote updates");
-            //        DatasetsManager.UpdateLocals(wb.FullName, updates);
-            //    }
-            //}
-        }
-        void Application_WorkbookBeforeSave(Excel.Workbook Wb, bool SaveAsUI, ref bool Cancel)
-        {
-            
-        }
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
         }

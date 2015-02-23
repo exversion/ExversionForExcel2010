@@ -78,9 +78,10 @@ namespace Exversion.Utils
             {
                 myWebRequest.Method = Method;
                 myWebRequest.ServicePoint.Expect100Continue = false;
-                myWebRequest.Timeout = 20 * 1000;
+                myWebRequest.Timeout = 10 * 60 * 1000;
                 myWebRequest.ContentType = "application/json";
                 myWebRequest.KeepAlive = false;
+                //myWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0";
             }
 
             return myWebRequest;

@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using Exversion.Entities;
+using System.Threading;
 
 namespace Exversion.ExcelAddIn.Dialogs
 {
@@ -45,6 +46,9 @@ namespace Exversion.ExcelAddIn.Dialogs
             lstOperator.Items.Add("  <=  ");
 
             lstColumns.SelectedIndex = lstOperator.SelectedIndex = 0;
+            
+            //txtMaxRecords.Text = Global.AppSettings.MaxRecords.ToString();
+            lblTotalRows.Text = datasetInf.RowCount.ToString();
         }
 
         private void UpdateColumns()
@@ -128,19 +132,29 @@ namespace Exversion.ExcelAddIn.Dialogs
                     filter += string.Format("[:{0}]", txtValue.Text);
                     break;
             }
-            query = filter;
+            query = filter + "&_limit=" + txtMaxRecords.Text;
 
             if (excludedColumns != string.Empty)
                 query += "&_remove=" + excludedColumns;
 
             grdPreview.Rows.Clear();
-            var raw = ApiConsumer.GetRows(datasetInf.ID, query,true);
+
+            ExcelAddIn.Global.ProgressInfo = "Getting data, please wait..";
+            ExcelAddIn.Global.ProgressIsFinished = false;
+            dynamic raw = null;
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                raw = ApiConsumer.GetRows(datasetInf.ID, query, true);
+                ExcelAddIn.Global.ProgressIsFinished = true;
+            });
+
+            new dlgBusy().ShowDialog();
+
             if (raw != null)
             {
                 List<string> selected, excluded;
                 selected = dataset.SelectedColumns;
                 excluded = dataset.ExcludedColumns;
-                //dataset = Utils.Converter.RawToExcelDataset(raw);
                 dataset = Utils.Converter.RawToExcelDataset(raw, selected);
                 if (dataset != null && dataset.Rows.Count > 0)
                 {
@@ -149,13 +163,6 @@ namespace Exversion.ExcelAddIn.Dialogs
                     dataset.SelectedColumns = selected;
                     dataset.ExcludedColumns = excluded;
                     int count = (dataset.Rows.Count < Constants.MAX_PREVIEW_ROWS) ? dataset.Rows.Count : Constants.MAX_PREVIEW_ROWS;
-
-                    //columns.Clear();
-                    //foreach (string key in dataset.Rows[0].Cells.Keys)
-                    //{
-                    //    columns.Add(key, true);
-                    //}
-                    //UpdateColumns();
 
                     grdPreview.Columns.Clear();
                     foreach (string key in dataset.Rows[0].Cells.Keys)
@@ -185,22 +192,31 @@ namespace Exversion.ExcelAddIn.Dialogs
 
         private void cmdImport_Click(object sender, EventArgs e)
         {
+            ExcelAddIn.Global.ProgressInfo = "Genetaring data in Excel, please wait..";
+            ExcelAddIn.Global.ProgressIsFinished = false;
+            dlgBusy dlg = new dlgBusy();
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                dlg.ShowDialog();
+            });
+
             if (isOwner)
                 ExcelUtils.ImportRange(dataset, chkActiveCell.Checked);
             else
             {
                 if (!chkTrackChanges.Checked)
-                    ExcelUtils.ImportRange(dataset,chkActiveCell.Checked, false);
+                    ExcelUtils.ImportRange(dataset, chkActiveCell.Checked, false);
                 else
                 {
                     string forkedID = ApiConsumer.ForkDataset(datasetInf);
                     if (!string.IsNullOrEmpty(forkedID))
                     {
                         dataset.ID = forkedID;
-                        ExcelUtils.ImportRange(dataset,chkActiveCell.Checked);
+                        ExcelUtils.ImportRange(dataset, chkActiveCell.Checked);
                     }
                     else
                     {
+                        dlg.BeginInvoke(new MethodInvoker(dlg.Close));
                         MessageBox.Show("Cannot create a branch for this dataset!\nDetails:\n" +
                                         ApiConsumer.LastErrorDescription, Constants.APP_NAME,
                                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -208,6 +224,8 @@ namespace Exversion.ExcelAddIn.Dialogs
                     }
                 }
             }
+            
+            dlg.BeginInvoke(new MethodInvoker(dlg.Close));
             DialogResult = DialogResult.OK;
         }
     }

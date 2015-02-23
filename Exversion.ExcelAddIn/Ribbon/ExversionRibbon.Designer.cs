@@ -37,31 +37,24 @@
             this.tabExversion = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
             this.grpRemoteDatasets = this.Factory.CreateRibbonGroup();
-            this.grpLocalDatasets = this.Factory.CreateRibbonGroup();
             this.grpHelp = this.Factory.CreateRibbonGroup();
             this.btnLogin = this.Factory.CreateRibbonButton();
             this.btnExport = this.Factory.CreateRibbonButton();
             this.btnImportMyData = this.Factory.CreateRibbonButton();
             this.btnSearchImport = this.Factory.CreateRibbonButton();
             this.btnUpdateRemote = this.Factory.CreateRibbonButton();
-            this.btnSelectDataset = this.Factory.CreateRibbonButton();
             this.btnUpdateLocal = this.Factory.CreateRibbonButton();
-            this.btnAvailableDatasets = this.Factory.CreateRibbonButton();
-            this.btnDatasetInfo = this.Factory.CreateRibbonButton();
-            this.btnDeleteDataset = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
             this.btnHelp = this.Factory.CreateRibbonButton();
             this.tabExversion.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.grpRemoteDatasets.SuspendLayout();
-            this.grpLocalDatasets.SuspendLayout();
             this.grpHelp.SuspendLayout();
             // 
             // tabExversion
             // 
             this.tabExversion.Groups.Add(this.grpMain);
             this.tabExversion.Groups.Add(this.grpRemoteDatasets);
-            this.tabExversion.Groups.Add(this.grpLocalDatasets);
             this.tabExversion.Groups.Add(this.grpHelp);
             this.tabExversion.Label = "Exversion";
             this.tabExversion.Name = "tabExversion";
@@ -78,20 +71,10 @@
             this.grpRemoteDatasets.Items.Add(this.btnImportMyData);
             this.grpRemoteDatasets.Items.Add(this.btnSearchImport);
             this.grpRemoteDatasets.Items.Add(this.btnUpdateRemote);
-            this.grpRemoteDatasets.Label = "Remote Datasets";
+            this.grpRemoteDatasets.Items.Add(this.btnUpdateLocal);
+            this.grpRemoteDatasets.Label = "Manage Datasets";
             this.grpRemoteDatasets.Name = "grpRemoteDatasets";
             this.grpRemoteDatasets.Visible = false;
-            // 
-            // grpLocalDatasets
-            // 
-            this.grpLocalDatasets.Items.Add(this.btnSelectDataset);
-            this.grpLocalDatasets.Items.Add(this.btnUpdateLocal);
-            this.grpLocalDatasets.Items.Add(this.btnAvailableDatasets);
-            this.grpLocalDatasets.Items.Add(this.btnDatasetInfo);
-            this.grpLocalDatasets.Items.Add(this.btnDeleteDataset);
-            this.grpLocalDatasets.Label = "Local Dataset";
-            this.grpLocalDatasets.Name = "grpLocalDatasets";
-            this.grpLocalDatasets.Visible = false;
             // 
             // grpHelp
             // 
@@ -146,15 +129,6 @@
             this.btnUpdateRemote.SuperTip = "Update remote dataset with contents of local dataset.";
             this.btnUpdateRemote.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateRemote_Click);
             // 
-            // btnSelectDataset
-            // 
-            this.btnSelectDataset.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSelectDataset.Image = global::Exversion.ExcelAddIn.Properties.Resources.select_dataset;
-            this.btnSelectDataset.Label = "Select";
-            this.btnSelectDataset.Name = "btnSelectDataset";
-            this.btnSelectDataset.ShowImage = true;
-            this.btnSelectDataset.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnSelectDataset_Click);
-            // 
             // btnUpdateLocal
             // 
             this.btnUpdateLocal.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -164,34 +138,6 @@
             this.btnUpdateLocal.ShowImage = true;
             this.btnUpdateLocal.SuperTip = "Update local dataset with contents of remote dataset.";
             this.btnUpdateLocal.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnUpdateLocal_Click);
-            // 
-            // btnAvailableDatasets
-            // 
-            this.btnAvailableDatasets.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnAvailableDatasets.Image = global::Exversion.ExcelAddIn.Properties.Resources.datasets;
-            this.btnAvailableDatasets.Label = "Datasets";
-            this.btnAvailableDatasets.Name = "btnAvailableDatasets";
-            this.btnAvailableDatasets.ShowImage = true;
-            this.btnAvailableDatasets.SuperTip = "Show available datasets on this workbook";
-            this.btnAvailableDatasets.Visible = false;
-            // 
-            // btnDatasetInfo
-            // 
-            this.btnDatasetInfo.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnDatasetInfo.Image = global::Exversion.ExcelAddIn.Properties.Resources.dataset_inf;
-            this.btnDatasetInfo.Label = "Info";
-            this.btnDatasetInfo.Name = "btnDatasetInfo";
-            this.btnDatasetInfo.ShowImage = true;
-            this.btnDatasetInfo.Visible = false;
-            // 
-            // btnDeleteDataset
-            // 
-            this.btnDeleteDataset.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnDeleteDataset.Image = global::Exversion.ExcelAddIn.Properties.Resources.remove_dataset;
-            this.btnDeleteDataset.Label = "Remove";
-            this.btnDeleteDataset.Name = "btnDeleteDataset";
-            this.btnDeleteDataset.ShowImage = true;
-            this.btnDeleteDataset.Visible = false;
             // 
             // btnAbout
             // 
@@ -223,8 +169,6 @@
             this.grpMain.PerformLayout();
             this.grpRemoteDatasets.ResumeLayout(false);
             this.grpRemoteDatasets.PerformLayout();
-            this.grpLocalDatasets.ResumeLayout(false);
-            this.grpLocalDatasets.PerformLayout();
             this.grpHelp.ResumeLayout(false);
             this.grpHelp.PerformLayout();
 
@@ -242,13 +186,8 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpHelp;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnHelp;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDeleteDataset;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup grpLocalDatasets;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateRemote;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAvailableDatasets;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnDatasetInfo;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnUpdateLocal;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSelectDataset;
     }
 
     partial class ThisRibbonCollection

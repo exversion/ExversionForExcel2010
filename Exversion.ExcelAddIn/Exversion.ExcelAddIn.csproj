@@ -159,6 +159,12 @@
     <Compile Include="Dialogs\dlgExcludeColumns.Designer.cs">
       <DependentUpon>dlgExcludeColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\dlgBusy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\dlgBusy.designer.cs">
+      <DependentUpon>dlgBusy.cs</DependentUpon>
+    </Compile>
     <Compile Include="RowComparers.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DatasetsManager.cs" />
@@ -250,6 +256,9 @@
     <EmbeddedResource Include="Dialogs\dlgExportData.resx">
       <DependentUpon>dlgExportData.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\dlgBusy.resx">
+      <DependentUpon>dlgBusy.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ribbon\ExversionRibbon.resx">
       <DependentUpon>ExversionRibbon.cs</DependentUpon>
     </EmbeddedResource>
@@ -309,6 +318,7 @@
     <None Include="gfx\ribbon\search_data.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gfx\dialogs\busy.gif" />
     <Content Include="gfx\ribbon\datasets.png" />
     <Content Include="gfx\ribbon\dataset_inf.png" />
     <Content Include="gfx\ribbon\import_dataset.png" />

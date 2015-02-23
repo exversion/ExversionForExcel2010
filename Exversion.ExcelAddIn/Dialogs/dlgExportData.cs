@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using Exversion.Entities;
+using System.Threading;
 
 namespace Exversion.ExcelAddIn.Dialogs
 {
@@ -19,26 +20,12 @@ namespace Exversion.ExcelAddIn.Dialogs
             InitializeComponent();
             JsonData = jsonData;
 
-            foreach (string col in ExcelUtils.PreviewDataset.SelectedColumns)
-            {
-                dtGridPreview.Columns.Add(col, col);
-            }
-
-            int maxRows = (ExcelUtils.PreviewDataset.Rows.Count < Constants.MAX_PREVIEW_ROWS) ? 
-                ExcelUtils.PreviewDataset.Rows.Count : Constants.MAX_PREVIEW_ROWS;
-
-            for (int i = 0; i < maxRows; i++)
-            {
-                int index = dtGridPreview.Rows.Add(ExcelUtils.PreviewDataset.Rows[i].Cells.Values.ToList().ToArray());
-                dtGridPreview.Rows[index].HeaderCell.Value = (index + 1).ToString();
-            }
+            txtPreview.Text = Global.PreviewJSON;
         }
 
         private void cmdExport_Click(object sender, EventArgs e)
         {
-            DatasetInfo dataset;
-
-            dataset = new DatasetInfo()
+           DatasetInfo dataset = new DatasetInfo()
                 {
                     Name = txtTitle.Text,
                     Description = txtDesc.Text,
@@ -49,21 +36,35 @@ namespace Exversion.ExcelAddIn.Dialogs
                     SourceDate = DateTime.Now.ToShortDateString(),
                 };
 
-                if (!ApiConsumer.CreateDataset(dataset))
+           ExcelAddIn.Global.ProgressInfo = "Creating remote dataset, please wait..";
+           ExcelAddIn.Global.ProgressIsFinished = false;
+           bool wasDatasetCreated, wasDataPushed;
+           wasDatasetCreated = wasDataPushed = false;
+
+           //dlgBusy dlg = new dlgBusy();
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                wasDatasetCreated = ApiConsumer.CreateDataset(dataset);
+                if (wasDatasetCreated)
                 {
-                    MessageBox.Show("Dataset creation failed!\nDetails:\n" +
-                        ApiConsumer.LastErrorDescription, Constants.APP_NAME,
-                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
+                    ExcelAddIn.Global.ProgressInfo = "Uploading data, please wait..";
+                    dataset.JsonData = JsonData;
+                    wasDataPushed = ApiConsumer.PushData(dataset);
                 }
+                ExcelAddIn.Global.ProgressIsFinished = true;
+            });
 
-            dataset.JsonData = JsonData;
-            ExportData(dataset);
-        }
+            new dlgBusy().ShowDialog();
 
-        private void ExportData(DatasetInfo dataset)
-        {
-            if (ApiConsumer.PushData(dataset))
+            if (!wasDatasetCreated)
+            {
+                MessageBox.Show("Dataset creation failed!\nDetails:\n" +
+                    ApiConsumer.LastErrorDescription, Constants.APP_NAME,
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (wasDataPushed)
             {
                 MessageBox.Show("Data has been exported successfully.", Constants.APP_NAME,
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -75,7 +76,8 @@ namespace Exversion.ExcelAddIn.Dialogs
                 ApiConsumer.LastErrorDescription, Constants.APP_NAME,
                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
+            
         }
+        
     }
 }

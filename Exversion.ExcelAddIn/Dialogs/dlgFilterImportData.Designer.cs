@@ -49,6 +49,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.lblTotalRows = new System.Windows.Forms.Label();
             this.chkActiveCell = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtMaxRecords = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.grdPreview)).BeginInit();
             this.grpFilter.SuspendLayout();
             this.SuspendLayout();
@@ -59,7 +61,7 @@
             this.grdPreview.AllowUserToDeleteRows = false;
             this.grdPreview.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.grdPreview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdPreview.Location = new System.Drawing.Point(12, 266);
+            this.grdPreview.Location = new System.Drawing.Point(12, 279);
             this.grdPreview.Name = "grdPreview";
             this.grdPreview.ReadOnly = true;
             this.grdPreview.RowHeadersWidth = 60;
@@ -69,7 +71,7 @@
             // cmdImport
             // 
             this.cmdImport.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdImport.Location = new System.Drawing.Point(384, 654);
+            this.cmdImport.Location = new System.Drawing.Point(384, 667);
             this.cmdImport.Name = "cmdImport";
             this.cmdImport.Size = new System.Drawing.Size(100, 28);
             this.cmdImport.TabIndex = 10;
@@ -81,7 +83,7 @@
             // 
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdCancel.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdCancel.Location = new System.Drawing.Point(278, 654);
+            this.cmdCancel.Location = new System.Drawing.Point(278, 667);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(100, 28);
             this.cmdCancel.TabIndex = 11;
@@ -214,7 +216,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(12, 237);
+            this.label4.Location = new System.Drawing.Point(12, 250);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 16);
             this.label4.TabIndex = 11;
@@ -223,7 +225,7 @@
             // cmdPreview
             // 
             this.cmdPreview.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdPreview.Location = new System.Drawing.Point(342, 217);
+            this.cmdPreview.Location = new System.Drawing.Point(342, 237);
             this.cmdPreview.Name = "cmdPreview";
             this.cmdPreview.Size = new System.Drawing.Size(140, 29);
             this.cmdPreview.TabIndex = 9;
@@ -248,22 +250,22 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(198, 237);
+            this.label5.Location = new System.Drawing.Point(298, 211);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(78, 16);
+            this.label5.Size = new System.Drawing.Size(132, 16);
             this.label5.TabIndex = 11;
-            this.label5.Text = "Total rows :";
+            this.label5.Text = "Total available rows :";
             // 
             // lblTotalRows
             // 
             this.lblTotalRows.AutoSize = true;
             this.lblTotalRows.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalRows.ForeColor = System.Drawing.Color.Blue;
-            this.lblTotalRows.Location = new System.Drawing.Point(282, 237);
+            this.lblTotalRows.Location = new System.Drawing.Point(431, 212);
             this.lblTotalRows.Name = "lblTotalRows";
-            this.lblTotalRows.Size = new System.Drawing.Size(18, 16);
+            this.lblTotalRows.Size = new System.Drawing.Size(14, 16);
             this.lblTotalRows.TabIndex = 11;
-            this.lblTotalRows.Text = "--";
+            this.lblTotalRows.Text = "?";
             // 
             // chkActiveCell
             // 
@@ -276,19 +278,40 @@
             this.chkActiveCell.Text = "Put data starting froml the active cell (otherwise from cell A1)";
             this.chkActiveCell.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(25, 211);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(139, 16);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Max records to import:";
+            // 
+            // txtMaxRecords
+            // 
+            this.txtMaxRecords.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMaxRecords.Location = new System.Drawing.Point(166, 208);
+            this.txtMaxRecords.Name = "txtMaxRecords";
+            this.txtMaxRecords.Size = new System.Drawing.Size(60, 21);
+            this.txtMaxRecords.TabIndex = 8;
+            this.txtMaxRecords.Text = "2500";
+            // 
             // dlgFilterImportData
             // 
             this.AcceptButton = this.cmdImport;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
-            this.ClientSize = new System.Drawing.Size(494, 685);
+            this.ClientSize = new System.Drawing.Size(494, 701);
             this.Controls.Add(this.chkActiveCell);
             this.Controls.Add(this.chkTrackChanges);
             this.Controls.Add(this.cmdPreview);
             this.Controls.Add(this.lblTotalRows);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtMaxRecords);
             this.Controls.Add(this.grpFilter);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdImport);
@@ -331,5 +354,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblTotalRows;
         private System.Windows.Forms.CheckBox chkActiveCell;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtMaxRecords;
     }
 }

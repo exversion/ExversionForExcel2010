@@ -24,7 +24,7 @@ namespace Exversion.ExcelAddIn
 
         public static ExcelRangeState GetRangeState()
         {
-            Excel.Range range=ExcelApp.Selection as Excel.Range;
+            Excel.Range range = ExcelApp.Selection as Excel.Range;
             if (range == null)
                 return ExcelRangeState.INVALID_SELECTION;
             else if (ExcelApp.WorksheetFunction.CountA(range) == 0)
@@ -69,7 +69,10 @@ namespace Exversion.ExcelAddIn
                 colNames[k] = colName;
                 PreviewDataset.SelectedColumns.Add(colName);
             }
-            //foreach (Excel.Range row in range.Rows)
+
+            string text;
+            Global.PreviewJSON = string.Empty;
+
             for (int i = 2; i <= rowCount; i++)
             {
                 if (ExcelApp.WorksheetFunction.CountA(range.Rows[i]) == 0)
@@ -79,18 +82,11 @@ namespace Exversion.ExcelAddIn
                 line.Append("{");
                 firstVal = true;
 
-                if (i <= Constants.MAX_PREVIEW_ROWS + 2)
-                    row = new Row();
-                //else
-                //    row = null;
-
                 for (int j = 1; j <= colCount; j++)
                 {
                     var cell = range.Rows[i].Cells[j];
-                    string text = cell.Text;//.ToString();
-                    //if (row != null)
-                    if (i <= Constants.MAX_PREVIEW_ROWS + 2)
-                        row.Cells.Add(PreviewDataset.SelectedColumns[j - 1], text);
+                    
+                    text = cell.Text;
                     if (cell.Value != null)
                         val = cell.Value.ToString();
                     if (text != val)
@@ -109,16 +105,18 @@ namespace Exversion.ExcelAddIn
                         line.Append("," + val);
                     }
                 }
-                PreviewDataset.Rows.Add(row);
-
+                
                 line.Append("}");
                 if (firstLine)
                 {
-                    result.Append(line.ToString());
+                    Global.PreviewJSON = line.ToString();
+                    result.Append(Global.PreviewJSON);
                     firstLine = false;
                 }
                 else
                 {
+                    if (i < 4)// to have 2 row in preview
+                        Global.PreviewJSON += "," + line.ToString();
                     result.Append("," + line.ToString());
                 }
             }

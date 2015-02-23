@@ -33,11 +33,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.dtGridPreview = new System.Windows.Forms.DataGridView();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdExport = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dtGridPreview)).BeginInit();
+            this.txtPreview = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // chkPrivate
@@ -88,20 +87,6 @@
             this.label3.TabIndex = 14;
             this.label3.Text = "Name:";
             // 
-            // dtGridPreview
-            // 
-            this.dtGridPreview.AllowUserToAddRows = false;
-            this.dtGridPreview.AllowUserToDeleteRows = false;
-            this.dtGridPreview.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dtGridPreview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtGridPreview.Location = new System.Drawing.Point(14, 203);
-            this.dtGridPreview.Name = "dtGridPreview";
-            this.dtGridPreview.ReadOnly = true;
-            this.dtGridPreview.RowHeadersWidth = 60;
-            this.dtGridPreview.Size = new System.Drawing.Size(484, 283);
-            this.dtGridPreview.TabIndex = 10;
-            this.dtGridPreview.TabStop = false;
-            // 
             // cmdCancel
             // 
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -128,11 +113,21 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 180);
+            this.label1.Location = new System.Drawing.Point(12, 192);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 16);
             this.label1.TabIndex = 13;
             this.label1.Text = "Preview:";
+            // 
+            // txtPreview
+            // 
+            this.txtPreview.Location = new System.Drawing.Point(93, 192);
+            this.txtPreview.Multiline = true;
+            this.txtPreview.Name = "txtPreview";
+            this.txtPreview.ReadOnly = true;
+            this.txtPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtPreview.Size = new System.Drawing.Size(394, 285);
+            this.txtPreview.TabIndex = 15;
             // 
             // dlgExportData
             // 
@@ -141,9 +136,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cmdCancel;
             this.ClientSize = new System.Drawing.Size(510, 529);
+            this.Controls.Add(this.txtPreview);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.cmdExport);
-            this.Controls.Add(this.dtGridPreview);
             this.Controls.Add(this.chkPrivate);
             this.Controls.Add(this.txtDesc);
             this.Controls.Add(this.label1);
@@ -157,7 +152,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Export Data";
-            ((System.ComponentModel.ISupportInitialize)(this.dtGridPreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,9 +164,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DataGridView dtGridPreview;
         private System.Windows.Forms.Button cmdCancel;
         private System.Windows.Forms.Button cmdExport;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtPreview;
     }
 }

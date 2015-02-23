@@ -14,8 +14,12 @@ namespace Exversion.ExcelAddIn
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public int MaxRecords { get; set; }
+        public string AlternativeBaseURL { get; set; }
+        public bool UseAlternativeBaseURL { get; set; }
         public bool KeepMeSigned { get; set; }
         public bool IsUserLoggged { get; set; }
+
 
         public static void SaveSettings(Settings settings)
         {

@@ -9,6 +9,7 @@ using Microsoft.Office.Tools.Ribbon;
 using Exversion.ExcelAddIn.Dialogs;
 using System.Windows.Forms;
 using Exversion.Entities;
+using System.Threading;
 
 namespace Exversion.ExcelAddIn
 {
@@ -32,10 +33,57 @@ namespace Exversion.ExcelAddIn
 
         private void btnExport_Click(object sender, RibbonControlEventArgs e)
         {
-            string JsonData = GetJsonData();
-            if (JsonData != null && ExcelUtils.PreviewDataset != null &&
-                ExcelUtils.PreviewDataset.SelectedColumns.Count > 0 && ExcelUtils.PreviewDataset.Rows.Count > 0)
+            string JsonData = null;
+
+            ExcelAddIn.Global.ProgressInfo = "Preparing data, please wait..";
+            ExcelAddIn.Global.ProgressIsFinished = false;
+            dlgBusy dlg = new dlgBusy();
+            /************************/
+            Excel.Range range;
+            string msg = null;
+
+            if (IsRangeReady())
+            {
+                range = ExcelUtils.NormalizeRange(Globals.ThisAddIn.Application.Selection);
+                if (Globals.ThisAddIn.Application.WorksheetFunction.CountA(range.Rows[1]) < range.Columns.Count)
+                    msg = "The first row, which represents columns names, should not contain any empty cells!";
+                else if (range.Columns.Count < 2 || range.Rows.Count < 3)
+                    msg = "You MUST select at least a 2x3 range!";
+                else
+                {
+                    range.Select();
+                    //JsonData = ExcelUtils.RangeToJSon(range);
+                }
+
+                if (msg != null)
+                {
+                    MessageBox.Show(msg, Constants.APP_NAME,
+                        MessageBoxButtons.OK, MessageBoxIcon.Question);
+                    return;
+                }
+            }
+            else
+                return;
+        /****************************/
+            ThreadPool.QueueUserWorkItem(o =>
+                {
+                    dlg.ShowDialog();
+                    //new dlgBusy().ShowDialog();
+                    //JsonData = GetJsonData();
+                    //ExcelAddIn.Global.ProgressIsFinished = true;
+                });
+            
+            //new dlgBusy().ShowDialog();
+            JsonData = GetJsonData();
+            dlg.BeginInvoke(new MethodInvoker(dlg.Close));
+
+            //ExcelAddIn.Global.ProgressIsFinished = true;
+
+            if ((JsonData = ExcelUtils.RangeToJSon(range))!= null)
+            {
+                int size = JsonData.Length;
                 new dlgExportData(JsonData).ShowDialog();
+            }
         }
 
         private string GetJsonData()
