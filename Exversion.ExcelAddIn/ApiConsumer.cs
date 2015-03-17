@@ -185,8 +185,10 @@ namespace Exversion.ExcelAddIn
             return null;
         }
 
-        public static dynamic GetRows(string datasetID,string query,bool parseAsArray=false)
+        public static dynamic GetRows(string datasetID, string query, bool parseAsArray = false)
         {
+            LastErrorDescription = string.Empty;
+
             HttpRequestResult result = SimpleQuery.GetRows(datasetID, query, parseAsArray);
             if (result != null)
             {

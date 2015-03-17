@@ -174,13 +174,12 @@ namespace Exversion.ExcelAddIn.Dialogs
                         grdPreview.Rows[index].HeaderCell.Value = (index + 1).ToString();
                     }
                     cmdImport.Enabled = true;
-                    lblTotalRows.Text = dataset.Rows.Count.ToString();
                     dataset.Query = query;
                     return;
                 }
             }
 
-            MessageBox.Show("Sorry, No data was found!", Constants.APP_NAME,
+            MessageBox.Show(ApiConsumer.LastErrorDescription, Constants.APP_NAME,
                 MessageBoxButtons.OK, MessageBoxIcon.Question);
             cmdImport.Enabled = false;
         }
@@ -192,7 +191,7 @@ namespace Exversion.ExcelAddIn.Dialogs
 
         private void cmdImport_Click(object sender, EventArgs e)
         {
-            ExcelAddIn.Global.ProgressInfo = "Genetaring data in Excel, please wait..";
+            ExcelAddIn.Global.ProgressInfo = "Generating data in Excel, please wait..";
             ExcelAddIn.Global.ProgressIsFinished = false;
             dlgBusy dlg = new dlgBusy();
             ThreadPool.QueueUserWorkItem(o =>

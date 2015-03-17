@@ -273,9 +273,9 @@
             this.chkActiveCell.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkActiveCell.Location = new System.Drawing.Point(24, 151);
             this.chkActiveCell.Name = "chkActiveCell";
-            this.chkActiveCell.Size = new System.Drawing.Size(380, 20);
+            this.chkActiveCell.Size = new System.Drawing.Size(377, 20);
             this.chkActiveCell.TabIndex = 31;
-            this.chkActiveCell.Text = "Put data starting froml the active cell (otherwise from cell A1)";
+            this.chkActiveCell.Text = "Put data starting from the active cell (otherwise from cell A1)";
             this.chkActiveCell.UseVisualStyleBackColor = true;
             // 
             // label6
